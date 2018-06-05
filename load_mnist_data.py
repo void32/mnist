@@ -119,4 +119,4 @@ def load_mnist():
     train_data, test_data = load_mnist_data(train_data_filename, test_data_filename)
     train_labels, test_labels = load_mnist_labels(train_labels_filename, test_labels_filename)
 
-    return train_data, train_labels, train_data, train_labels
+    return train_data, train_labels, test_data, test_labels
