@@ -19,7 +19,7 @@ SEED = 42
 
 
 if __name__ == "__main__":
-    """ Load Data set """
+    """ Load data set """
     train_data, train_labels, train_data, train_labels = load_mnist()
 
     """ Define variables in the model, these will hold the trainable weights """
@@ -31,6 +31,22 @@ if __name__ == "__main__":
 
     # Regarding the test data, the entire dataset is held in memory as one constant node
     test_data_node = tf.constant(train_data, train_labels, test_data, test_labels)
+
+    # Parameters/Variables for the hidden layers:
+    # The variables below hold all the trainable weights. For each, the
+    # parameter defines how the variables will be initialized.
+
+    NEURONS_HIDDEN_LAYER = 16
+    fc1_weights = tf.Variable(
+      tf.truncated_normal(
+        shape=NEURONS_HIDDEN_LAYER,
+        stddev=0.1,
+        seed=SEED
+      )
+    )
+    fc1_biases = tf.Variable(tf.constant(0.1, shape=NEURONS_HIDDEN_LAYER))
+
+    # ...
 
     """ Define structure of the basic model graph """
 
