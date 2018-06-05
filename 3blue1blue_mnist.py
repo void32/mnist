@@ -23,11 +23,14 @@ if __name__ == "__main__":
     train_data, train_labels, train_data, train_labels = load_mnist()
 
     """ Define variables in the model, these will hold the trainable weights """
-    # This is where training samples and labels are fed to the graph.
+    # This is where training samples and labels are fed to the graph
+    # (we feed data into the graph through these placeholders)
     # These placeholder nodes will be fed a batch of training data at each training step.
     train_data_node = tf.placeholder(tf.float32, shape=(BATCH_SIZE, IMAGE_SIZE, IMAGE_SIZE, NUM_CHANNELS))
     train_labels_node = tf.placeholder(tf.float32, shape=(BATCH_SIZE, NUM_LABELS))
 
+    # Regarding the test data, the entire dataset is held in memory as one constant node
+    test_data_node = tf.constant(train_data, train_labels, test_data, test_labels)
 
     """ Define structure of the basic model graph """
 
