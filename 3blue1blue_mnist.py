@@ -23,15 +23,20 @@ if __name__ == "__main__":
     train_data, train_labels, test_data, test_labels = load_mnist()
 
     """ Define variables in the model, these will hold the trainable weights """
+    """
+    train_data_node -> fc1 -> fc2 -> result_node
+    """
+
     # This is where training samples and labels are fed to the graph
     # (we feed data into the graph through these placeholders)
     # These placeholder nodes will be fed a batch of training data at each training step.
     train_data_node = tf.placeholder(tf.float32, shape=(BATCH_SIZE, IMAGE_SIZE, IMAGE_SIZE, NUM_CHANNELS))
+
     train_labels_node = tf.placeholder(tf.float32, shape=(BATCH_SIZE, NUM_LABELS))
 
     # Regarding the test data, the entire dataset is held in memory as one constant node
-    test_data_node = tf.constant(train_data, train_labels, test_data, test_labels)
-
+    test_data_node = tf.constant(test_data)
+    """
     # Parameters/Variables for the hidden layers:
     # The variables below hold all the trainable weights. For each, the
     # parameter defines how the variables will be initialized.
@@ -45,7 +50,7 @@ if __name__ == "__main__":
       )
     )
     fc1_biases = tf.Variable(tf.constant(0.1, shape=NEURONS_HIDDEN_LAYER))
-
+    """
     # ...
 
     """ Define structure of the basic model graph """
