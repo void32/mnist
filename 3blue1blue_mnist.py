@@ -22,6 +22,12 @@ if __name__ == "__main__":
     """ Load data set """
     train_data, train_labels, test_data, test_labels = load_mnist()
 
+    # print train_data.shape
+
+    # train_data = train_data.reshape(60000, 28 * 28, 1)
+
+    # print train_data.shape
+
 
     """ Build the model
 
@@ -77,17 +83,31 @@ if __name__ == "__main__":
 
 
     # Result layer
-    fc2_weights = tf.Variable(
+    fc3_weights = tf.Variable(
       tf.truncated_normal(
         shape=[NEURONS_HIDDEN_LAYER_2, NUM_LABELS],
         stddev=0.1,
         seed=SEED
       )
     )
-    fc2_biases = tf.Variable(tf.constant(0.1, shape=[NUM_LABELS]))
+    fc3_biases = tf.Variable(tf.constant(0.1, shape=[NUM_LABELS]))
 
 
     """ Define structure of the basic model graph """
+    data = train_data_node
+
+    # Reshape the feature map cuboid into a 2D matrix to feed it to the
+    # fully connected layers.
+    data_shape = data.get_shape().as_list()
+    reshape = tf.reshape(
+        data,
+        [data_shape[0], data_shape[1] * data_shape[2] * data_shape[3]])
+
+    # Fully connected layer. Note that the '+' operation automatically broadcasts the biases.
+    input_to_hidden1 = tf.nn.relu(tf.matmul(reshape, fc1_weights) + fc1_biases)
+    hidden1_to_hidden2 = tf.nn.relu(tf.matmul(fc1_weights, fc2_weights) + fc2_biases)
+    hidden2_to_output = tf.nn.relu(tf.matmul(fc2_weights, fc3_weights) + fc3_weights)
+
 
     """ Train ... """
 
