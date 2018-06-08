@@ -20,7 +20,7 @@ SEED = 42
 
 if __name__ == "__main__":
     """ Load data set """
-    train_data, train_labels, train_data, train_labels = load_mnist()
+    train_data, train_labels, test_data, test_labels = load_mnist()
 
     """ Define variables in the model, these will hold the trainable weights """
     # This is where training samples and labels are fed to the graph
