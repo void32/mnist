@@ -47,6 +47,7 @@ We'll expect a 7.
 """
 NUM_LABELS = 10  # The number of label for minst is the ten digitst 0,1,..,9,10
 IMAGE_SIZE = 28  # number of rows and columns
+IMAGE_PIXELS = IMAGE_SIZE**2
 PIXEL_DEPTH = 255  # 8 bit
 
 NUM_TRAIN_IMAGES = 60000

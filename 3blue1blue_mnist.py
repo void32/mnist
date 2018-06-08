@@ -8,7 +8,7 @@ Tensorflow basics and the Math behide CNNs.
 """
 
 import tensorflow as tf
-from load_mnist_data import IMAGE_SIZE, NUM_LABELS, load_mnist
+from load_mnist_data import IMAGE_SIZE, IMAGE_PIXELS, NUM_LABELS, load_mnist
 
 # This defines the size of the batch - (We'll bundle groups of examples during training for efficiency).
 BATCH_SIZE = 60
@@ -22,10 +22,21 @@ if __name__ == "__main__":
     """ Load data set """
     train_data, train_labels, test_data, test_labels = load_mnist()
 
+
+    """ Build the model
+
+    The architecture used in the 3blue1brown lesson https://youtu.be/aircAruvnKk?t=2m3s
+
+    Variable              Operations               Variable            Operations              Variable              Operations               Variable
+                       matmul,addition,relu                        matmul,addition,relu                           matmul,addition,relu
+    Input layer   ----------748x16----------> First hidden layer ---------16x16---------> Second hidden layer ------------16x10-----------> Output layer
+    (784 neurons)      (Fully connected)        (16 neurons)          (Fully connected)       (16 neurons)           (Fully connected)       (16 neurons)
+    Pixel values                                                                                                                             Labels: 0 1 .. 9
+
+    """
+
     """ Define variables in the model, these will hold the trainable weights """
-    """
-    train_data_node -> fc1 -> fc2 -> result_node
-    """
+
 
     # This is where training samples and labels are fed to the graph
     # (we feed data into the graph through these placeholders)
@@ -36,31 +47,51 @@ if __name__ == "__main__":
 
     # Regarding the test data, the entire dataset is held in memory as one constant node
     test_data_node = tf.constant(test_data)
-    """
+
     # Parameters/Variables for the hidden layers:
     # The variables below hold all the trainable weights. For each, the
     # parameter defines how the variables will be initialized.
 
-    NEURONS_HIDDEN_LAYER = 16
+    # First hidden layer
+    NEURONS_HIDDEN_LAYER_1 = 16
     fc1_weights = tf.Variable(
       tf.truncated_normal(
-        shape=NEURONS_HIDDEN_LAYER,
+        shape=[IMAGE_PIXELS, NEURONS_HIDDEN_LAYER_1],
         stddev=0.1,
         seed=SEED
       )
     )
-    fc1_biases = tf.Variable(tf.constant(0.1, shape=NEURONS_HIDDEN_LAYER))
-    """
-    # ...
+    fc1_biases = tf.Variable(tf.constant(0.1, shape=[NEURONS_HIDDEN_LAYER_1]))
+
+
+    # Second hidden layer
+    NEURONS_HIDDEN_LAYER_2 = 16
+    fc2_weights = tf.Variable(
+      tf.truncated_normal(
+        shape=[NEURONS_HIDDEN_LAYER_1, NEURONS_HIDDEN_LAYER_2],
+        stddev=0.1,
+        seed=SEED
+      )
+    )
+    fc2_biases = tf.Variable(tf.constant(0.1, shape=[NEURONS_HIDDEN_LAYER_2]))
+
+
+    # Result layer
+    fc2_weights = tf.Variable(
+      tf.truncated_normal(
+        shape=[NEURONS_HIDDEN_LAYER_2, NUM_LABELS],
+        stddev=0.1,
+        seed=SEED
+      )
+    )
+    fc2_biases = tf.Variable(tf.constant(0.1, shape=[NUM_LABELS]))
+
 
     """ Define structure of the basic model graph """
 
+    """ Train ... """
 
+    """ Use the test set to predict and calculate error rate """
 
-
-    # Train ...
-
-    # Use the test set to predict and calculate error rate
-
-    # visualize the results for the test set and the layers trained
+    """ visualize the results for the test set and the layers trained  """
 
