@@ -65,9 +65,9 @@ if __name__ == "__main__":
         shape=[IMAGE_PIXELS, NEURONS_HIDDEN_LAYER_1],
         stddev=0.1,
         seed=SEED
-      )
+      ), name = "fc1_weights"
     )
-    fc1_biases = tf.Variable(tf.constant(0.1, shape=[NEURONS_HIDDEN_LAYER_1]))
+    fc1_biases = tf.Variable(tf.constant(0.1, shape=[NEURONS_HIDDEN_LAYER_1]), name = "fc1_biases")
 
 
     # Second hidden layer
@@ -77,9 +77,9 @@ if __name__ == "__main__":
         shape=[NEURONS_HIDDEN_LAYER_1, NEURONS_HIDDEN_LAYER_2],
         stddev=0.1,
         seed=SEED
-      )
+      ), name = "fc2_weights"
     )
-    fc2_biases = tf.Variable(tf.constant(0.1, shape=[NEURONS_HIDDEN_LAYER_2]))
+    fc2_biases = tf.Variable(tf.constant(0.1, shape=[NEURONS_HIDDEN_LAYER_2]), name = "fc2_biases")
 
 
     # Result layer
@@ -88,9 +88,9 @@ if __name__ == "__main__":
         shape=[NEURONS_HIDDEN_LAYER_2, NUM_LABELS],
         stddev=0.1,
         seed=SEED
-      )
+      ), name = "fc3_weights"      
     )
-    fc3_biases = tf.Variable(tf.constant(0.1, shape=[NUM_LABELS]))
+    fc3_biases = tf.Variable(tf.constant(0.1, shape=[NUM_LABELS]), name = "fc3_biases")
 
 
     """ Define structure of the basic model graph """
@@ -106,8 +106,18 @@ if __name__ == "__main__":
     # Fully connected layer. Note that the '+' operation automatically broadcasts the biases.
     input_to_hidden1 = tf.nn.relu(tf.matmul(reshape, fc1_weights) + fc1_biases)
     hidden1_to_hidden2 = tf.nn.relu(tf.matmul(fc1_weights, fc2_weights) + fc2_biases)
-    hidden2_to_output = tf.nn.relu(tf.matmul(fc2_weights, fc3_weights) + fc3_weights)
+    hidden2_to_output = tf.nn.relu(tf.matmul(fc2_weights, fc3_weights) + fc3_biases)
 
+
+    """ Tensorbord test"""
+    with tf.Session() as sess:
+        # To start Tensorbord:
+        # $ tensorboard --logdir=/tmp/output
+        writer = tf.summary.FileWriter("/tmp/tf_output", sess.graph)
+        init = tf.global_variables_initializer()
+        tmp = sess.run(init)
+        print(tmp)
+        writer.close()
 
     """ Train ... """
 
