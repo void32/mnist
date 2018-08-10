@@ -1,3 +1,5 @@
-#! /bin/bash
-# Run the 3blue1blue_mnist.py inside a docker container with tensorflow
-docker run -it -p 6006:6006 -v $(pwd):/current gcr.io/tensorflow/tensorflow:latest-devel bash -c "python /current/3blue1blue_mnist.py"
+#!/usr/bin/env bash
+
+# Run the 3blue1blue_mnist.py inside a docker container with tensorflow and start a tensorbord
+# To view the tensor board, navigate to http://localhost:6006/ in a browser on the hostmachine
+docker run -it -p 6006:6006 -v $(pwd):/current gcr.io/tensorflow/tensorflow:latest-devel bash -c "python /current/3blue1blue_mnist.py && tensorboard --logdir=/tmp/tf_output/"
